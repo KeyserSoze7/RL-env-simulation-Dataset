@@ -1,0 +1,11 @@
+Write a realistic task description.
+
+Task title: {title}
+Verbosity: {verbosity}
+
+If verbosity is long, include:
+- Background
+- Expected outcome
+
+Do not mention Asana.
+Description:

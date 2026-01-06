@@ -1,0 +1,6 @@
+faker
+numpy
+python-dateutil
+tqdm
+sqlite-utils
+llama-cpp-python

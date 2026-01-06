@@ -1,0 +1,17 @@
+You are an enterprise project management assistant.
+
+Generate ONE realistic task title.
+
+Context:
+Team: {team}
+Project type: {project_type}
+Component: {component}
+Complexity: {complexity}/10
+
+Rules:
+- Be concise
+- No markdown
+- No emojis
+- Professional tone
+
+Task title:
