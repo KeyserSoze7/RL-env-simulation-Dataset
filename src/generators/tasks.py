@@ -5,20 +5,16 @@ from pathlib import Path
 from utils.random_utils import uuid, random_date
 from utils.llm_llamacpp import llm_generate
 
-# ------------------------------------------------------------
-# CONFIG
-# ------------------------------------------------------------
-FAST_MODE = True       # 🔥 SET TO False FOR FULL RUN
-COMMIT_EVERY = 5       # commit every N tasks
+
+FAST_MODE = True       # SET TO False FOR FULL RUN
+COMMIT_EVERY = 5       # commiting every N tasks
 
 PROMPTS_DIR = Path("src/prompts")
 TASK_TITLE_PROMPT = PROMPTS_DIR / "task_title.txt"
 TASK_DESC_PROMPT = PROMPTS_DIR / "task_description.txt"
 
 
-# ------------------------------------------------------------
-# LLM text generation
-# ------------------------------------------------------------
+
 def generate_task_text(meta):
     title_prompt = TASK_TITLE_PROMPT.read_text().format(
         team=meta["team"],
@@ -41,16 +37,14 @@ def generate_task_text(meta):
 
     description = llm_generate(desc_prompt, max_tokens=128)
 
-    # Allow empty descriptions sometimes
+    # Allowing empty descriptions sometimes
     if random.random() < 0.2:
         description = None
 
     return title.strip(), description.strip() if description else None
 
 
-# ------------------------------------------------------------
-# Main task generator
-# ------------------------------------------------------------
+
 def generate(cursor, project_ids, section_map, user_ids):
     task_ids = []
 
@@ -61,7 +55,7 @@ def generate(cursor, project_ids, section_map, user_ids):
             else random.randint(50, 150)
         )
 
-        print(f"   📦 Generating {n_tasks} tasks for project {project_id}")
+        print(f"    Generating {n_tasks} tasks for project {project_id}")
 
         for task_idx in range(1, n_tasks + 1):
             created_at = random_date(180)
@@ -95,7 +89,7 @@ def generate(cursor, project_ids, section_map, user_ids):
             section_id = random.choice(section_map[project_id])
             status = random.choice(["todo", "in_progress", "done"])
 
-            # 🔥 LLM call
+            # LLM call
             title, description = generate_task_text(
                 {
                     "team": "engineering",
@@ -143,10 +137,10 @@ def generate(cursor, project_ids, section_map, user_ids):
 
             task_ids.append(task_id)
 
-            # 🔍 LIVE progress
-            print(f"      📝 Task {task_idx}/{n_tasks}: {title[:60]}")
+            #  LIVE progress
+            print(f"      Task {task_idx}/{n_tasks}: {title[:60]}")
 
-            # 💾 Periodic commit
+            # Periodic commit
             if task_idx % COMMIT_EVERY == 0:
                 cursor.connection.commit()
 

@@ -1,7 +1,7 @@
 from llama_cpp import Llama
 from pathlib import Path
 
-# Absolute model path (known-good)
+
 MODEL_PATH = Path("/home/adityasr7/llama.cpp/models/Llama-3.2-1B-Instruct-Q8_0.gguf")
 
 if not MODEL_PATH.exists():

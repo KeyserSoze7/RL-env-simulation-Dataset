@@ -4,9 +4,8 @@ import time
 import random
 from pathlib import Path
 
-# ---------------------------------------------------------
-# CONFIG
-# ---------------------------------------------------------
+
+
 OUTPUT_FILE = Path("data/task_instruction_data.jsonl")
 OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
 
@@ -22,9 +21,9 @@ QUERY = "is:issue is:public language:python"
 MAX_PAGES = 10        # 10 * 100 = 1000 issues
 SLEEP_SECONDS = 2     # be polite
 
-# ---------------------------------------------------------
+
 # Helpers
-# ---------------------------------------------------------
+
 def infer_project_type(text):
     text = text.lower()
     if any(k in text for k in ["bug", "error", "fix", "crash"]):
@@ -44,9 +43,9 @@ def infer_complexity(title, body):
     length = len((title + (body or "")).split())
     return min(10, max(3, length // 8))
 
-# ---------------------------------------------------------
+
 # Scraper
-# ---------------------------------------------------------
+
 def scrape():
     count = 0
 

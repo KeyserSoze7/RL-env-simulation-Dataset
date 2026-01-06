@@ -5,9 +5,9 @@ from utils.llm_llamacpp import llm_generate
 SENTIMENTS = ["neutral", "positive", "blocking"]
 
 PROMPTS = {
-    "neutral": "Write a short neutral task update comment.",
-    "positive": "Write a short positive comment indicating progress or completion.",
-    "blocking": "Write a short comment describing a blocker or issue.",
+    "neutral": "Write a single line neutral task update comment.",
+    "positive": "Write a single line positive comment indicating progress or completion.",
+    "blocking": "Write a single line comment describing a blocker or issue.",
 }
 
 def generate(cursor, task_ids, user_ids):

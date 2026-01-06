@@ -85,9 +85,7 @@ def generate(cursor, workspace_id, team_ids, users_per_team=400):
 
             user_id = uuid()
 
-            # ----------------------------------------------------
-            # Insert user
-            # ----------------------------------------------------
+
             cursor.execute(
                 """
                 INSERT INTO user (
@@ -116,9 +114,7 @@ def generate(cursor, workspace_id, team_ids, users_per_team=400):
                 ),
             )
 
-            # ----------------------------------------------------
-            # Team membership
-            # ----------------------------------------------------
+
             cursor.execute(
                 """
                 INSERT INTO team_membership (

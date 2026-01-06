@@ -20,15 +20,11 @@ def main():
     conn = sqlite3.connect(DB)
     cursor = conn.cursor()
 
-    # ------------------------------------------------------------
-    # SQLite settings for long-running jobs
-    # ------------------------------------------------------------
+
     cursor.execute("PRAGMA journal_mode=WAL;")
     cursor.execute("PRAGMA synchronous=NORMAL;")
 
-    # ------------------------------------------------------------
-    # Workspace
-    # ------------------------------------------------------------
+  
     workspace_id = "workspace-001"
     print("Creating workspace...")
 
@@ -44,9 +40,7 @@ def main():
     conn.commit()
     print(" Workspace ready")
 
-    # ------------------------------------------------------------
-    # Teams (enterprise-scale)
-    # ------------------------------------------------------------
+
     TEAM_DEFS = [
         "Platform",
         "Backend",
@@ -81,9 +75,7 @@ def main():
     conn.commit()
     print(f" Created {len(team_ids)} teams")
 
-    # ------------------------------------------------------------
-    # Users (enterprise scale: ~5k users)
-    # ------------------------------------------------------------
+   
     USERS_PER_TEAM = 400  # 12 × 400 = 4,800 users
 
     print(" Generating users...")
@@ -96,25 +88,19 @@ def main():
     conn.commit()
     print(f" Users committed: {len(user_ids)}")
 
-    # ------------------------------------------------------------
-    # Projects
-    # ------------------------------------------------------------
+
     print(" Generating projects...")
     project_ids = projects.generate(cursor, team_ids)
     conn.commit()
     print(f" Projects committed: {len(project_ids)}")
 
-    # ------------------------------------------------------------
-    # Sections
-    # ------------------------------------------------------------
+ 
     print("Generating sections...")
     section_map = sections.generate(cursor, project_ids)
     conn.commit()
     print(" Sections committed")
 
-    # ------------------------------------------------------------
-    # Tasks (LONG RUN — progress visible)
-    # ------------------------------------------------------------
+
     print("Generating tasks (LLM-based, slow but realistic)...")
     task_ids = []
 
@@ -138,49 +124,37 @@ def main():
         print(f" Committed {len(new_tasks)} tasks")
         print(f"Total tasks so far: {len(task_ids)}")
 
-    # ------------------------------------------------------------
-    # Subtasks
-    # ------------------------------------------------------------
+
     print("\nGenerating subtasks...")
     subtasks.generate(cursor, task_ids)
     conn.commit()
     print(" Subtasks committed")
 
-    # ------------------------------------------------------------
-    # Comments (LLM-generated, diverse)
-    # ------------------------------------------------------------
+
     print(" Generating comments...")
     comments.generate(cursor, task_ids, user_ids)
     conn.commit()
     print(" Comments committed")
 
-    # ------------------------------------------------------------
-    # Custom fields
-    # ------------------------------------------------------------
+  
     print("Generating custom fields...")
     custom_fields.generate(cursor, workspace_id, task_ids)
     conn.commit()
     print(" Custom fields committed")
 
-    # ------------------------------------------------------------
-    # Tags
-    # ------------------------------------------------------------
+  
     print("Generating tags...")
     tags.generate(cursor, workspace_id, task_ids)
     conn.commit()
     print(" Tags committed")
 
-    # ------------------------------------------------------------
-    # Attachments
-    # ------------------------------------------------------------
+
     print("Generating attachments...")
     attachments.generate(cursor, task_ids)
     conn.commit()
     print(" Attachments committed")
 
-    # ------------------------------------------------------------
-    # Done
-    # ------------------------------------------------------------
+  
     conn.close()
     print("\nDONE — enterprise-scale dataset generated successfully!")
 
